@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: centralized-configuration-service
+  profiles:
+#    active: native # mandatory when using file system
+    active: native # Can assign multiple sources as redis,jdbc but will have to include order attribute; Can also pass multiple profiles like dev,dynamic
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:../file-system-configurations/config-reader-client # should be direct path to property files, which means can't have multiple applications
+        git: # both git and native doesn't work together
+          uri: https://github.com/rohitnandi12/handson-spring  # mandatory to be repository link
+          searchPaths: # add multiple search paths
+            - spring-guides/guide-config-server/file-system-configurations/config-reader-client
+          clone-on-start: true
+        redis:
+          order: 10
+        jdbc:
+          order: 9
+
+server:
+  port: 8888
+
+logging:
+  level:
+    root: DEBUG
